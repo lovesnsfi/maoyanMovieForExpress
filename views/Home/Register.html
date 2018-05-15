@@ -1,0 +1,144 @@
+<form role="form" id="registerForm" style="display:none">
+    <div class=" form-group">
+        <div class=" input-group">
+            <div class=" input-group-addon">账号</div>
+            <input type="text" class=" form-control" placeholder="请输入用户名" name="u_name" id="u_name">
+        </div>
+    </div>
+    <div class=" form-group">
+        <div class=" input-group">
+            <div class=" input-group-addon">性别</div>
+            <select name="u_sex" id="u_sex" class=" form-control">
+              <option value="男">男</option>
+              <option value="女">女</option>
+              <option value="保密">保密</option>
+            </select>
+        </div>
+    </div>
+    <div class=" form-group">
+        <div class=" input-group">
+            <div class=" input-group-addon">昵称</div>
+            <input type="text" class=" form-control" placeholder="请输入用户昵称" name="u_nickname" id="u_nickname">
+        </div>
+    </div>
+    <div class=" form-group">
+        <div class=" input-group">
+            <div class=" input-group-addon">密码</div>
+            <input type="text" class=" form-control" placeholder="请输入用户密码" name="u_password" id="u_password">
+        </div>
+    </div>
+    <div class=" form-group">
+        <div class=" input-group">
+            <div class=" input-group-addon">电话</div>
+            <input type="text" class=" form-control" placeholder="请输入手机号" name="u_tel" id="u_tel">
+        </div>
+    </div>
+    <div class=" form-group">
+        <div class=" input-group">
+            <div class=" input-group-addon">邮箱</div>
+            <input type="text" class=" form-control" placeholder="请输入用户邮箱" name="u_email" id="u_email">
+            <div class=" input-group-btn">
+                <button type="button" class=" btn" style="background-color:#e54847" id="btnGetVCode">获取验证码</button>
+            </div>
+        </div>
+    </div>
+    <div class=" form-group">
+        <div class=" input-group">
+            <div class=" input-group-addon">验证</div>
+            <input type="text" class=" form-control" placeholder="请输入验证码" name="VCode" id="VCode">
+        </div>
+    </div>
+    <div class=" form-group">
+        <button type="button" class=" btn btn-block" style="background-color:#e54847" id="btnRegister">注册</button>
+    </div>
+</form>
+<script type="text/javascript">
+    $(function() {
+        $("#u_name").blur(function() {
+            //当它输入值以后，我再发请求判断
+            if ($(this).val().trim() != "") {
+                $.get("/UserInfo/checku_name/" + $(this).val(), function(data) {
+                    if (data.status == "success") {
+                        layer.msg(data.msg);
+                    } else {
+                        layer.alert(data.msg);
+                        $("#u_name").val("").focus();
+                    }
+                })
+            }
+        });
+        $("#u_tel").blur(function() {
+            if ($(this).val() != "") {
+                var telStr = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+                if (telStr.test($(this).val())) {
+                    //远程去服务上面验证是否已经存在
+                    $.get("/UserInfo/checkTel/" + $(this).val(), function(data) {
+                        if (data.status == "success") {
+                            layer.msg(data.msg)
+                        } else {
+                            layer.alert(data.msg);
+                            $("#u_tel").val("").focus();
+                        }
+                    });
+                } else {
+                    layer.msg("请输入正确的手机号");
+                    $(this).val("");
+                }
+            }
+        });
+        $("#btnGetVCode").click(function() {
+            var mail = $("#u_email").val();
+
+            var strMail = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+            if (strMail.test(mail)) {
+                //远程检查邮箱是否存在，并获取验证码
+                $.get("/UserInfo/checkEmail/" + mail, function(data) {
+                    if (data.status == "success") {
+                        layer.msg(data.msg);
+                    } else {
+                        layer.alert(data.msg);
+                    }
+                })
+            } else {
+                layer.msg("请输入正确的邮箱");
+                $("#u_mail").val("");
+            }
+        });
+        $("#btnRegister").click(function() {
+            //第一步：先验证信息是否输入完整 
+            //第二步：判断输入的验证码是否是正确的
+            //第三步：向后台提交注册信息
+            var inputValide = true; //默认都是输入的
+            var u_email = $("#u_email").val();
+            var v_code = $("#VCode").val();
+            $("#registerForm input[type='text'],#registerForm input[type='password']").each(function(index, ele) {
+                if ($(this).val() == "" || $(this).val() == null || $(this).val() == undefined) {
+                    inputValide = false;
+                    return;
+                }
+            });
+            //经过这里，就代表第一步验证通过了
+            if (inputValide) {
+                //向后台去发送数据请求，看是否有输入验证码正确
+                $.get("/UserInfo/checkVCode/" + v_code + "/" + u_email, function(data) {
+                    if (data.status == "success") {
+                        //提交表单
+                        $.post("/UserInfo/registerUser", $("#registerForm").serialize(), function(data) {
+                            if (data.status == "success") {
+                                layer.alert(data.msg, "", function() {
+                                    location.href = "/Home/Index";
+                                });
+                            } else {
+                                layer.alert(data.msg);
+                            }
+                        });
+                    } else {
+                        layer.alert(data.msg);
+                    }
+                })
+            } else {
+                layer.alert("请将信息输入完整");
+            }
+        });
+    });
+</script>

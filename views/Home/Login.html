@@ -1,0 +1,124 @@
+<%var obj={pageTitle:"用户登陆"}%>
+    {{include "../Header.html"}}
+    <style type="text/css">
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 40px;
+            background-color: #e54847;
+            color: #FFFFFF;
+            font-size: 18px;
+            position: relative;
+        }
+        
+        .header .back {
+            width: 30px;
+            position: absolute;
+            left: 10px;
+            cursor: pointer;
+            top: 5px;
+        }
+        
+        .header .back img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .topNav {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            height: 40px;
+            margin: 0px;
+            padding: 0px;
+            list-style-type: none;
+        }
+        
+        .topNav li {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid lightgray;
+        }
+        
+        .topNav li a {
+            text-decoration: none;
+            color: black;
+        }
+        
+        .topNav li.active {
+            border-bottom-color: #e54847;
+            color: #e54847;
+            font-weight: bold;
+        }
+    </style>
+    <div>
+        <header class="header">
+            用户登陆与注册
+            <div class="back" onclick="history.back()">
+                <img src="../../public/images/back.png" alt="">
+            </div>
+        </header>
+        <ul class="topNav">
+            <li class="active" data-formid="#loginForm">用户登陆</li>
+            <li data-formid="#registerForm">用户注册</li>
+        </ul>
+        <div id="logDiv" class=" container" style="margin-top:20px">
+            <form class="" role="form" id="loginForm">
+                <div class=" form-group">
+                    <label for="" class=" control-label sr-only">用户名</label>
+                    <input type="text" class=" form-control" placeholder="用户名或邮箱或手机号" name="u_name" id="">
+                </div>
+                <div class=" form-group">
+                    <label for="" class=" control-label sr-only">密码</label>
+                    <input type="password" class=" form-control" placeholder="请输入密码" name="u_password" id="">
+                </div>
+                <div class=" form-group">
+                    <button type="button" class=" btn btn-block" style="background-color:#e54847" id="btnLogin">登陆</button>
+                </div>
+            </form>
+            {{include "./Register.html"}}
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function() {
+            $(".topNav>li").click(function() {
+                $(this).addClass("active").siblings().removeClass("active");
+                var formid = $(this).data("formid");
+                $(formid).show().siblings().hide();
+            });
+            $("#btnLogin").click(function() {
+                var inputValide = true;
+                $("#loginForm input[type='text'],#loginForm input[type='password']").each(function(index, ele) {
+                    if ($(this).val() == "" || $(this).val() == null || $(this).val() == undefined) {
+                        inputValide = false;
+                        return;
+                    }
+                });
+                if (inputValide) {
+                    $.post("/UserInfo/checkLogin", $("#loginForm").serialize(), function(data) {
+                        if (data.status == "success") {
+                            layer.alert(data.msg, "", function() {
+                                localStorage.setItem("u_name", data.data.u_name);
+                                localStorage.setItem("u_nickname", data.data.u_nickname);
+                                location.href = "/Home/Index";
+                            });
+                        } else {
+                            layer.msg(data.msg)
+                        }
+                    })
+                } else {
+                    layer.alert("请输入用户名与密码以后再登陆");
+                }
+            });
+        })
+    </script>
+    {{include "../Footer.html"}}

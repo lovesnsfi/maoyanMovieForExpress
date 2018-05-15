@@ -1,0 +1,55 @@
+<div class=" table-responsive">
+    <table class=" table table-hover table-bordered table-striped">
+      <tr>
+        <th>电影名称</th>
+        <th>主演</th>
+        <th>电影类型</th>
+        <th>上映时间</th>
+        <th>电影时长</th>
+        <th>电影评分</th>
+        <td>操作</td>
+      </tr>
+      {{each data item index}}
+        <tr data-m_id="{{item.m_id}}">
+          <td>{{item.m_name}}</td>
+          <td>{{item.m_actor}}</td>
+          <td>{{item.m_type}}</td>
+          <td>{{item.show_time.toLocaleDateString()}}</td>
+          <td>{{item.play_time}}</td>
+          <td>{{item.m_score}}</td>
+          <td>
+            <button type="button" class=" btn btn-danger btn-xs" title="删除" onclick="deleteMovieInfo('{{item.m_id}}')">
+              <span class=" glyphicon glyphicon-trash"></span>
+            </button>
+            &nbsp;&nbsp;
+            <a href="/MovieInfo/editMovieInfo/{{item.m_id}}" class=" btn btn-warning btn-xs" title="编辑">
+              <span class=" glyphicon glyphicon-pencil"></span>
+            </a>
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+  <ul class=" pagination pull-right">
+    <%for(var i=1;i<=pageCount;i++){%>
+      <li class="{{i==pageIndex?'active':''}}"><a href="#">{{i}}</a></li>
+    <%}%>
+  </ul>
+  <script type="text/javascript">
+    //根据电影id去删除一条电影
+    function deleteMovieInfo(m_id){
+      if(confirm("你确定要删除吗")){
+        $.get("/MovieInfo/deleteMovieInfo/"+m_id,function(data){
+          if(data.status=="success"){
+            layer.alert("删除成功","",function(){
+              location.reload();  //刷新当前页
+            });
+
+          }
+          else{
+            layer.alert("删除失败,请刷新重试或联系管理员");
+          }
+      });
+      }
+    }
+  </script>

@@ -1,0 +1,75 @@
+<style type="text/css">
+  #menuGroup
+  {
+    text-align: center;
+  }
+  #menuGroup .panel,#menuGroup .panel-heading
+  {
+    border-radius: 0px;
+  }
+  #menuGroup .panel-body
+  {
+    padding: 0px;
+  }
+  #menuGroup .list-group
+  {
+    margin-bottom: 0px;
+  }
+</style>
+<div class=" panel-group" id="menuGroup">
+  <div class=" panel panel-default">
+    <div class=" panel-heading">
+      <div class=" panel-title" data-toggle="collapse" data-target="#AdminInfoManager">用户管理</div>
+    </div>
+    <div class=" collapse panel-collapse" id="AdminInfoManager">
+      <div class=" panel-body">
+        <ul class=" list-group list-unstyled">
+          <li class=" list-group-item">
+            <a href="#">新增用户</a>
+          </li>
+          <li class=" list-group-item">
+            <a href="#">用户列表</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class=" panel panel-default">
+    <div class=" panel-heading">
+      <div class=" panel-title" data-toggle="collapse" data-target="#MovieInfoManger">影片管理</div>
+    </div>
+    <div class=" collapse panel-collapse" id="MovieInfoManger">
+      <div class=" panel-body">
+        <ul class=" list-group list-unstyled">
+          <li class=" list-group-item">
+            <a href="/MovieInfo/addMovieInfo" target="main">影片上线</a>
+          </li>
+          <li class=" list-group-item">
+            <a href="/MovieInfo/query" target="main">影片列表</a>
+          </li>
+          <li class=" list-group-item">
+            <a href="/PlayInfo/addPlayInfo" target="main">电影排片</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class=" panel panel-default">
+    <div class=" panel-heading">
+      <div class=" panel-title" data-toggle="collapse" data-target="#HallInfo">影厅管理</div>
+    </div>
+    <div class=" collapse panel-collapse" id="HallInfo">
+      <div class=" panel-body">
+        <ul class=" list-group list-unstyled">
+          <li class=" list-group-item">
+            <a href="/HallInfo/addHallInfo" target="main">新增影厅</a>
+          </li>
+          <li class=" list-group-item">
+            <a href="#">影厅列表</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

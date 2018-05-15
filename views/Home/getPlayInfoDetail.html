@@ -1,0 +1,97 @@
+<%var obj={pageTitle:"电影选座购票"};%>
+<link rel="stylesheet" type="text/css" href="../../public/css/getPlayInfoDetail.css">
+  {{include "../Header.html"}}
+  <input type="hidden" id="p_id" value="{{pageData.p_id}}">
+  <input type="hidden" id="p_price" value="{{pageData.p_price}}">
+  <div class='topTitle'>
+    <div class="back" onclick="history.back()">
+      <img src="../../public/images/back.png" alt="">
+    </div>
+    电影选座购票
+  </div>
+  <div class="topInfo">
+    <ul class=" left list-unstyled">
+      <li style="font-weight:bold;font-size:16px;">{{pageData.m_name}}</li>
+      <li>{{pageData.p_showtime.toLocaleString()}}</li>
+    </ul>
+    <span class="p_price">单价：￥{{pageData.p_price}}</span>
+    <button id="btnSubmitTicker" type="button" class="btn btn-sm" style="background-color:#e54847;color:#FFFFFF">提交订单</button>
+  </div>
+  <div class="seats_info">
+    <div>
+      <img src="../../public/images/wx.png" alt="">可选
+    </div>
+    <div>
+      <img src="../../public/images/zx.png" alt="">已选
+    </div>
+    <div>
+      <img src="../../public/images/yx.png" alt="">已售
+    </div>
+  </div>
+  <div class="h_name">
+    {{pageData.h_name}}
+  </div>
+  <!--循环生成影厅的坐位 -->
+  <div class="content-seats-info">
+    <%for(var i=0;i<h_seats.length;i++){%>
+      <div class="seats_row">
+        <%for(var j=0;j<h_seats[i].length;j++){%>
+          <div class="box{{h_seats[i][j]}}" data-status="{{h_seats[i][j]}}" data-text="第{{i+1}}排第{{j+1}}号"></div>
+        <%}%>
+      </div>
+    <%}%>
+  </div>
+
+  <style type="text/css">
+    .p_price
+    {
+      font-size: 18px;
+      color: orange;
+    }
+  </style>
+  <script type="text/javascript">
+    $(function(){
+      $(".content-seats-info").on("click",".box0",function(){
+        $(this).removeClass("box0").addClass("box2");
+        $(this).attr("data-status","1");
+      });
+      $(".content-seats-info").on("click",".box2",function(){
+        $(this).removeClass("box2").addClass("box0");
+        $(this).attr("data-status","0");
+      });
+      $("#btnSubmitTicker").click(function(){
+        //第一步：获取坐位的信息
+        var arr=[];  //用于保存我的座位信息   
+        $(".content-seats-info>.seats_row").each(function(index,ele){
+          //这个代表所有的行   所有的行又是一个数组
+          var rowArr=[];
+          $(this).children().each(function(index,ele){
+            rowArr.push(parseInt($(this).data("status")));
+          });
+          arr.push(rowArr);
+        });
+
+        //第二步：获取坐位的详细信息
+        var seats_info_Arr=[];   //坐位的详细信息
+        $(".content-seats-info .box2").each(function(index,ele){
+          seats_info_Arr.push($(this).data("text"));
+        });        
+        
+        //Ajax 的 Post请求向后台提交数据
+        $.post("/PlayInfo/submitTicker",{
+          p_id:$("#p_id").val(),
+          o_price:parseFloat($("#p_price").val())*seats_info_Arr.length,
+          h_seats:JSON.stringify(arr),
+          h_seatsInfo:seats_info_Arr.toString()
+        },function(data){
+          if(data.status=="success"){
+            layer.msg("提交成功");
+          }
+          else{
+            layer.msg(data.msg);
+          }
+        });
+      });
+    });
+  </script>
+  {{include "../Footer.html"}}

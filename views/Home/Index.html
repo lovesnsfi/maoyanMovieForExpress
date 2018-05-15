@@ -1,0 +1,136 @@
+<%var obj={pageTitle:"电影列表"}%>
+    {{include "../Header.html" obj}}
+    <style type="text/css">
+        * {
+            margin: 0px;
+            padding: 0px;
+            list-style-type: none;
+            font-family: "microsoft yahei";
+        }
+        
+        .header {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 40px;
+            background-color: #e54847;
+            color: #FFFFFF;
+            font-size: 18px;
+            position: relative;
+        }
+        
+        .movieItem {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+        
+        .movieItem .left {
+            width: 110px;
+            box-sizing: border-box;
+            padding: 3px;
+        }
+        
+        .movieItem .left img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .movieItem .right {
+            width: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .movieItem .center {
+            box-sizing: border-box;
+            padding: 3px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        
+        .score {
+            color: orange;
+        }
+        
+        .btnBuy {
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            background-color: #e54847;
+            color: #FFFFFF;
+            padding: 5px;
+            width: 70px;
+        }
+        
+        .m_name {
+            font-size: 16px;
+        }
+        
+        .show_time {
+            color: gray;
+        }
+        
+        .header .right {
+            width: 30px;
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            cursor: pointer;
+        }
+        
+        .header .right img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    </style>
+    <div class="main">
+        <header class="header">
+            【江汉大学】校园电影
+            <div class="right" onclick="location.href='/Home/Login'">
+                <img src="../../public/images/user.png" alt="">
+            </div>
+        </header>
+        <div class=" movieList">
+            {{each data item index}}
+            <div data-m_id="{{item.m_id}}" class=" movieItem">
+                <div class=" left">
+                    <img src="{{item.m_img}}" alt="">
+                </div>
+                <div class=" center" style="font-size:12px;">
+                    <p class="m_name">{{item.m_name}}</p>
+                    <p class="m_type">{{item.m_type}}</p>
+                    <p class="m_actor">{{item.m_actor}}</p>
+                    <p class="show_time">{{item.show_time.toLocaleDateString()}}</p>
+                </div>
+                <div class=" right">
+                    <span class="score">9.0</span>
+                    <button type="button" class="btnBuy">
+                        购票
+                    </button>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function() {
+            $(".movieList").on("click", ".movieItem", function() {
+                var m_id = $(this).data("m_id");
+                location.href = "/Home/movieInfoDetail/" + m_id;
+            })
+            $(".btnBuy").click(function(event) {
+                event.stopPropagation();
+                layer.msg("购票");
+            });
+        })
+    </script>
+    {{include "../Footer.html"}}

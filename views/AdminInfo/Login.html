@@ -1,0 +1,69 @@
+<%var obj={pageTitle:"登陆后台系统"}%>
+{{include "../Header.html" obj}}
+    <style type="text/css">
+        body{
+            background-image: url(../../public/images/admin-login-bg.jpg);
+            background-attachment: fixed;
+            width: 100%;
+            height: 100%;
+            background-size: 100%;
+        }
+        #formLogin
+        {
+            width: 400px;
+            height: 250px;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            border: 1px solid orange;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+    </style>
+    <div class=" container">
+        <form action="/AdminInfo/checkLogin" id="formLogin" method="POST">
+            <div class=" form-group">
+                <h2 class=" text-center">登陆后台系统</h2> 
+            </div>
+            <div class=" form-group">
+                <div class=" input-group">
+                    <div class=" input-group-addon">
+                        <span class=" glyphicon glyphicon-user"></span>
+                    </div>
+                    <input type="text" id="admin_id" name="admin_id" class=" form-control" placeholder="请输入用户名">
+                </div>
+            </div>
+            <div class=" form-group">
+                <div class=" input-group">
+                    <div class=" input-group-addon">
+                        <span class=" glyphicon glyphicon-lock"></span>
+                    </div>
+                    <input type="text" id="admin_password" name="admin_password" class=" form-control" placeholder="请输入密码">
+                </div>
+            </div>
+            <div class=" form-group">
+                <button type="button" id="btnLogin" class=" btn btn-primary btn-block">登陆</button>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            $("#btnLogin").click(function(){
+                $.post("/AdminInfo/checkLoginAjax",{
+                    admin_id:$("#admin_id").val(),
+                    admin_password:$("#admin_password").val()
+                },function(data){
+                    if(data.status=="success"){
+                        layer.alert("登陆成功","",function(){
+                            location.href="/Manager/Index";
+                        });
+                    }
+                    else{
+                        layer.alert(data.msg);
+                    }
+                })
+            })
+        })
+    </script>
+    {{include "../Footer.html"}}

@@ -1,0 +1,74 @@
+<!--这是电影的排片信息 -->
+{{if(playInfoList.length==0)}}
+  <p class=" h3 text-primary text-center">暂无排片信息</p>
+{{else}}
+<div class=" container">
+  <div class=" h3">
+    播放信息
+  </div>
+    {{each playInfoList item index}}
+      <div class="row playInfoItem">
+        <div class="p_showtime">
+          <div style="font-weight:bold">{{item.p_showtime.toLocaleTimeString()}}</div>
+          <div>{{item.p_showtime.toLocaleDateString()}}</div>
+        </div>
+        <div class="h_name">{{item.h_name}}</div>
+        <div class="p_price">{{item.p_price}}</div>
+        <div class="buyBtn">
+          <button type="button" class=" btn btn-xs btn-buyticker" style="background-color:#e54847;color:white" data-p_id="{{item.p_id}}">选座购票</button>
+        </div>
+      </div>
+    {{/each}}
+</div>
+{{/if}}
+
+<style type="text/css">
+  .playInfoItem
+  {
+    display: flex;
+    align-items: center;
+    border: 1px solid lightgray;
+    margin-bottom: 3px;
+    font-size: 14px;
+    padding: 5px 0;
+  }
+  .playInfoItem>div
+  {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .p_showtime
+  {
+    width: 80px;
+    flex-direction: column !important;
+  }
+  .h_name
+  {
+    flex: 0.4;
+  }
+  .p_price
+  {
+    flex:0.6;
+  }
+  .buyBtn
+  {
+    width: 80px;
+  }
+  @media only screen and (max-width:375px) {
+    .playInfoItem
+    {
+      font-size: 12px;
+    }
+  }
+</style>
+<script type="text/javascript">
+  $(function(){
+    $(".playInfoItem").on("click",".btn-buyticker",function(){
+      var p_id=$(this).data("p_id");
+      location.href="/PlayInfo/getPlayInfoDetail/"+p_id;
+    });
+  })
+</script>

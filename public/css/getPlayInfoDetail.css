@@ -1,0 +1,108 @@
+body {
+  background-color: #f0efed !important;
+}
+
+.topTitle {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: #e54847;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+  position: relative;
+}
+
+.back {
+  width: 28px;
+  height: 28px;
+  position: absolute;
+  left: 5px;
+  cursor: pointer;
+}
+
+.back img {
+  width: 100%;
+}
+
+.topInfo {
+  background-color: #f8f8f8;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 10px;
+  height: 45px;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+}
+
+.topInfo .left {
+  margin: 0px;
+}
+
+.seats_info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background-color: #f8f8f8;
+  height: 35px;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+}
+
+.seats_info>div>img {
+  width: 20px;
+  height: 20px;
+}
+
+.h_name {
+  width: 200px;
+  height: 20px;
+  font-size: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #e54847;
+  color: #FFFFFF;
+  margin: auto;
+  border-radius: 0 0 20px 20px;
+}
+
+/*坐位信息的样式*/
+.content-seats-info
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+.seats_row {
+  display: flex;
+  flex-direction: row;
+}
+
+.box0,
+.box1,
+.box2 {
+  width: 20px;
+  height: 20px;
+  background-size: cover;
+  margin: 1.5px;
+}
+
+.box0 {
+
+  background-image: url(../../public/images/wx.png);
+}
+
+.box1 {
+  background-image: url(../../public/images/yx.png);
+}
+
+.box2 {
+  background-image: url(../../public/images/zx.png);
+}

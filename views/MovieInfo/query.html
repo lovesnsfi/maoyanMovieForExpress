@@ -1,0 +1,42 @@
+<% var obj={pageTitle:"影片列表"}%>
+{{include "../Header.html" obj}}
+<div class=" container-fluid">
+  <div class=" page-header">
+    <h2 class=" text-center text-primary">影片列表</h2>
+  </div>
+  <form action="" class=" form-inline" id="queryForm">
+    <div class=" form-group">
+      <label for="" class=" control-label">电影名称</label>
+      <input type="text" name="m_name" id="m_name" class=" form-control" placeholder="请输入影片名称">
+    </div>
+    <div class=" form-group">
+      <button type="button" class=" btn btn-primary" id="btnQuery">
+        <span class=" glyphicon glyphicon-search"></span>查询
+      </button>
+    </div>
+  </form>
+  <div id="contentList">
+    {{include "./contentList.html" pageData}}
+  </div>
+</div>
+<script type="text/javascript">
+  $(function(){
+    $("#btnQuery").click(function(){
+      $.post("/MovieInfo/queryAjax",{
+        m_name:$("#m_name").val()
+      },function(html){
+        $("#contentList").html(html);
+      })
+    })
+    $("#contentList").on("dblclick",".table tr:not(:eq(0))",function(){
+      var url = "/MovieInfo/movieDetail/"+$(this).data("m_id");
+      var index = layer.open({
+          type: 2,
+          title: "电影详细信息",
+          content: url
+      });
+      layer.full(index);
+    })
+  });
+</script>
+{{include "../Footer.html"}}

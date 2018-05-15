@@ -1,0 +1,22 @@
+<%var obj={pageTitle:"影片详细信息"}%>
+{{include "../Header.html" obj}}
+<!--我希望在这个界面时面，显示电影的详细信息 -->
+<div class=" container">
+  <div class=" page-header">
+    <h2 class=" text-center text-primary">{{pageData.m_name}} 电影详细信息</h2>
+  </div>
+  <div class=" media">
+    <div class=" media-left">
+      <img src="{{pageData.m_img}}" alt="">
+    </div>
+    <div class=" media-body">
+      <div class=" media-heading">
+        <h2>{{pageData.m_name}}</h2>
+      </div>
+      <p class=" lead">
+        {{pageData.m_description}}
+      </p>
+    </div>
+  </div>
+</div>
+{{include "../Footer.html"}}
